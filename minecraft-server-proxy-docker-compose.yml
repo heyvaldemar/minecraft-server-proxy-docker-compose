@@ -4,26 +4,25 @@
 # For details on deploying the Minecraft Server (not the proxy), check out this link: https://github.com/heyvaldemar/minecraft-server-docker-compose/
 
 # Change variables in the `.env` to meet your requirements.
-# Note that the `.env`, `velocity.toml` files, and `plugins` folder should be in the same directory as `minecraft-server-docker-compose.yml`.
+# Note that the `.env` and `velocity.toml` file should be in the same directory as `minecraft-server-docker-compose.yml`.
 
-# Ensure that you connect to the same Docker network you used when deploying your Minecraft servers with Docker Compose.
+# Ensure that you are connected to the same Docker network as your previously deployed Minecraft servers. This is crucial for network communication between your server components.
 
-# Adjust the path to `velocity.toml` in the `minecraft-server-docker-compose.yml` based on your operating system:
-# - **For Linux or macOS:**
-#   - Uncomment the following line and comment out the `- ./velocity.toml:/config/velocity.toml` line:
+# Configure the Path to `velocity.toml` in `minecraft-server-docker-compose.yml`:
+#    - **Linux or macOS Users:**
+#      - Ensure the following line is active in your Docker Compose file to correctly mount the volume:
+#        ```yaml
+#        - ./velocity.toml:/config
+#        ```
 
-#     ```yaml
-#     - ./velocity.toml:/config
-#     ```
-# This adjusts the volume mount path to the appropriate location for Linux or macOS environments.
+#    - **Windows Users:**
+#      - You need to adjust the volume mount path due to the different file path formatting in Windows.
+#        Uncomment the line below and comment out the previous Linux/macOS line:
+#        ```yaml
+#        - ./velocity.toml:/config/velocity.toml
+#        ```
 
-# - **For Windows:**
-#   - Ensure this line is active in your Docker Compose file:
-
-#     ```yaml
-#     - ./velocity.toml:/config/velocity.toml
-#     ```
-# This sets the correct path format for Windows environments.
+#    This adjustment will set the correct path format based on your operating system, ensuring the server configures properly.
 
 # ## Configuration Requirements for the Proxy Server
 # To ensure the proxy server functions correctly, update both the IP addresses and ports in the `velocity.toml` file to reflect your specific Minecraft server setup.
@@ -109,9 +108,9 @@ services:
       - ./minecraft-server-proxy-data:/server
       # Adjust the path to 'velocity.toml' based on your operating system:
       # For Linux or macOS:
-      # Uncomment the line below and comment out the '- ./velocity.toml:/config/velocity.toml' line.
-      # - ./velocity.toml:/config
+      - ./velocity.toml:/config
       
-      # For Windows, the following path format is used (adjust as necessary if not correct):
-      - ./velocity.toml:/config/velocity.toml
+      # For Windows:
+      # Uncomment the line below and comment out the '- ./velocity.toml:/config' line.
+      # - ./velocity.toml:/config/velocity.toml
     restart: unless-stopped
