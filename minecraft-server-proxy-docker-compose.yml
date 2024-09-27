@@ -4,7 +4,7 @@
 # For details on deploying the Minecraft Server (not the proxy), check out this link: https://github.com/heyvaldemar/minecraft-server-docker-compose/
 
 # Change variables in the `.env` to meet your requirements.
-# Note that the `.env` and `velocity.toml` file should be in the same directory as `minecraft-server-docker-compose.yml`.
+# 💡 Note that the `.env`, `velocity.toml` file, and `plugins` folder should be in the same directory as `minecraft-server-docker-compose.yml`.
 
 # Ensure that you are connected to the same Docker network as your previously deployed Minecraft servers. This is crucial for network communication between your server components.
 
@@ -96,6 +96,16 @@ networks:
 services:
   minecraft-server-proxy:
     image: ${MINECRAFT_SERVER_IMAGE_TAG}
+    volumes:
+      - ./minecraft-server-proxy-data:/server
+      - ./plugins:/plugins:ro
+      # Adjust the path to 'velocity.toml' based on your operating system:
+      # For Linux or macOS:
+      - ./velocity.toml:/config
+      
+      # For Windows:
+      # Uncomment the line below and comment out the '- ./velocity.toml:/config' line.
+      # - ./velocity.toml:/config/velocity.toml
     environment:
       TYPE: ${MINECRAFT_SERVER_TYPE}
       MEMORY: ${MINECRAFT_SERVER_MEMORY}
@@ -104,13 +114,5 @@ services:
       - minecraft-server-network
     ports:
       - "${MINECRAFT_SERVER_SERVER_PORT}:${MINECRAFT_SERVER_SERVER_PORT}"
-    volumes:
-      - ./minecraft-server-proxy-data:/server
-      # Adjust the path to 'velocity.toml' based on your operating system:
-      # For Linux or macOS:
-      - ./velocity.toml:/config
-      
-      # For Windows:
-      # Uncomment the line below and comment out the '- ./velocity.toml:/config' line.
-      # - ./velocity.toml:/config/velocity.toml
+
     restart: unless-stopped

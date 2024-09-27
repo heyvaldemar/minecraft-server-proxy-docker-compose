@@ -12,7 +12,7 @@ The badge displayed on my repository indicates the status of the deployment veri
 
 ❗ Change variables in the `.env` to meet your requirements.
 
-💡 Note that the `.env` and `velocity.toml` file should be in the same directory as `minecraft-server-docker-compose.yml`.
+💡 Note that the `.env`, `velocity.toml` file, and `plugins` folder should be in the same directory as `minecraft-server-docker-compose.yml`.
 
 ❗ Ensure that you are connected to the same Docker network as your previously deployed Minecraft servers. This is crucial for network communication between your server components.
 
