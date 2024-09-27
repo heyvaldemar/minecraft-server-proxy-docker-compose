@@ -113,6 +113,6 @@ services:
       - minecraft-server-lobby-network
       - minecraft-server-network
     ports:
-      - "${MINECRAFT_SERVER_SERVER_PORT}:${MINECRAFT_SERVER_SERVER_PORT}"
-
+      - "${MINECRAFT_SERVER_PORT}:${MINECRAFT_SERVER_PORT}"
+      - "${MINECRAFT_BEDROCK_SERVER_PORT}:${MINECRAFT_BEDROCK_SERVER_PORT}/udp"
     restart: unless-stopped
