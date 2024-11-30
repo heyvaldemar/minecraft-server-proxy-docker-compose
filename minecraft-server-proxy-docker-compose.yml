@@ -4,9 +4,7 @@
 # For details on deploying the Minecraft Server (not the proxy), check out this link: https://github.com/heyvaldemar/minecraft-server-docker-compose/
 
 # Change variables in the `.env` to meet your requirements.
-# 💡 Note that the `.env`, `velocity.toml` file, and `plugins` folder should be in the same directory as `minecraft-server-docker-compose.yml`.
-
-# Ensure that you are connected to the same Docker network as your previously deployed Minecraft servers. This is crucial for network communication between your server components.
+# Note that the `.env`, `velocity.toml` file, and `plugins` folder should be in the same directory as `minecraft-server-docker-compose.yml`.
 
 # Configure the Path to `velocity.toml` in `minecraft-server-docker-compose.yml`:
 #    - **Linux or macOS Users:**
@@ -87,12 +85,6 @@
 # Support on Ko-fi: https://ko-fi.com/heyValdemar
 # Support on PayPal: https://www.paypal.com/paypalme/heyValdemarCOM
 
-networks:
-  minecraft-server-lobby-network:
-    external: true
-  minecraft-server-network:
-    external: true
-
 services:
   minecraft-server-proxy:
     image: ${MINECRAFT_SERVER_IMAGE_TAG}
@@ -109,9 +101,6 @@ services:
     environment:
       TYPE: ${MINECRAFT_SERVER_TYPE}
       MEMORY: ${MINECRAFT_SERVER_MEMORY}
-    networks:
-      - minecraft-server-lobby-network
-      - minecraft-server-network
     ports:
       - "${MINECRAFT_SERVER_PORT}:${MINECRAFT_SERVER_PORT}"
       - "${MINECRAFT_BEDROCK_SERVER_PORT}:${MINECRAFT_BEDROCK_SERVER_PORT}/udp"
