@@ -19,11 +19,6 @@ jobs:
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v3
 
-    - name: Create necessary Docker networks
-      run: |
-        docker network create minecraft-server-lobby-network || true
-        docker network create minecraft-server-network || true
-
     - name: Start up services using Docker Compose
       run: docker compose -f minecraft-server-proxy-docker-compose.yml -p minecraft-server-proxy up -d
 
@@ -43,11 +38,6 @@ jobs:
 
     - name: Print Docker Compose services status
       run: docker ps
-
-    - name: Inspect Network Configuration
-      run: |
-        docker network inspect minecraft-server-lobby-network
-        docker network inspect minecraft-server-network
 
     - name: Shutdown Docker Compose services
       if: always()
