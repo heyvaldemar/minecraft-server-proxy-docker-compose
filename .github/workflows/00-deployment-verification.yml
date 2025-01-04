@@ -14,7 +14,7 @@ jobs:
 
     env:
       DOCKER_COMPOSE_FILE: minecraft-server-proxy-docker-compose.yml
-      APP_HOSTNAME: minecraft-proxy.heyvaldemar.net
+      APP_HOSTNAME: minecraft-server-proxy.heyvaldemar.net
       COMPOSE_PROJECT_NAME: minecraft-server-proxy
       MINECRAFT_PORT: 25565
 
@@ -29,6 +29,9 @@ jobs:
         run: |
           echo "127.0.0.1 $APP_HOSTNAME" | sudo tee -a /etc/hosts
 
+      - name: Print Docker Compose services status
+        run: docker ps
+
       - name: Install Python and mcstatus
         run: |
           sudo apt-get update
@@ -42,9 +45,6 @@ jobs:
             echo "Waiting for the Minecraft server to be ready..."; \
             sleep 10; \
           done'
-
-      - name: Print Docker Compose services status
-        run: docker ps
 
       - name: Show container logs on failure
         if: failure()
