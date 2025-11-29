@@ -20,7 +20,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Start up services using Docker Compose
         run: docker compose -f $DOCKER_COMPOSE_FILE -p $COMPOSE_PROJECT_NAME up -d
@@ -32,17 +32,16 @@ jobs:
       - name: Print Docker Compose services status
         run: docker ps
 
-      - name: Install Python and mcstatus
+      - name: Install netcat
         run: |
           sudo apt-get update
-          sudo apt-get install -y python3-pip
-          pip3 install mcstatus
+          sudo apt-get install -y netcat-openbsd
 
-      - name: Wait for the Minecraft Server to be ready
+      - name: Wait for the Minecraft Server TCP port to be ready
         run: |
-          echo "Checking Minecraft server readiness at $APP_HOSTNAME:$MINECRAFT_PORT..."
-          timeout 5m bash -c 'while ! mcstatus $APP_HOSTNAME:$MINECRAFT_PORT status; do \
-            echo "Waiting for the Minecraft server to be ready..."; \
+          echo "Checking Minecraft server TCP port at $APP_HOSTNAME:$MINECRAFT_PORT..."
+          timeout 5m bash -c 'while ! nc -z $APP_HOSTNAME $MINECRAFT_PORT; do \
+            echo "Waiting for the Minecraft server TCP port to be ready..."; \
             sleep 10; \
           done'
 
