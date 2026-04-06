@@ -14,6 +14,8 @@ services:
     environment:
       TYPE: ${MINECRAFT_SERVER_TYPE}
       MEMORY: ${MINECRAFT_SERVER_MEMORY}
+    extra_hosts:
+      - host.docker.internal:host-gateway
     ports:
       - "${MINECRAFT_SERVER_PORT}:${MINECRAFT_SERVER_PORT}"
       - "${MINECRAFT_BEDROCK_SERVER_PORT}:${MINECRAFT_BEDROCK_SERVER_PORT}/udp"
