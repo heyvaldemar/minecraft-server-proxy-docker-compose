@@ -1,23 +1,31 @@
+# Image pins live HERE, as interpolation defaults, so `git pull` (or
+# re-downloading this file) delivers the exact version combination this
+# repository has tested — no .env editing required. Setting the matching
+# variable in .env overrides the default for anyone who wants to pin
+# differently; .env itself carries only deliberate overrides.
+# CI (the Trivy scan, check-pin-freshness, the deploy job) reads the pin
+# from this line — this block is the single source of truth.
+x-images:
+  mc-proxy: &mc-proxy-image ${MINECRAFT_SERVER_IMAGE_TAG:-itzg/mc-proxy:2026.8.2@sha256:49dddc3d80e72374d5c1e869d1940100bde97b04e10ece00eb2a4a559436dfc5}
+
 services:
   minecraft-server-proxy:
-    image: ${MINECRAFT_SERVER_IMAGE_TAG}
+    image: *mc-proxy-image
     volumes:
       - ./minecraft-server-proxy-data:/server
       - ./plugins:/plugins:ro
-      # Adjust the path to 'velocity.toml' based on your operating system:
-      # For Linux or macOS:
-      - ./velocity.toml:/config
-      
-      # For Windows:
-      # Uncomment the line below and comment out the '- ./velocity.toml:/config' line.
-      # - ./velocity.toml:/config/velocity.toml
+      # The image copies /config/velocity.toml into /server on startup.
+      # (Earlier revisions mounted the file over the /config directory
+      # itself, which the image ignored — Velocity then listened on its
+      # default 25577 while the compose published 25565.)
+      - ./velocity.toml:/config/velocity.toml:ro
     environment:
-      TYPE: ${MINECRAFT_SERVER_TYPE}
-      MEMORY: ${MINECRAFT_SERVER_MEMORY}
-      PLUGINS: ${MINECRAFT_SERVER_PLUGINS}
+      TYPE: ${MINECRAFT_SERVER_TYPE:-VELOCITY}
+      MEMORY: ${MINECRAFT_SERVER_MEMORY:-2G}
+      PLUGINS: ${MINECRAFT_SERVER_PLUGINS:-https://download.geysermc.org/v2/projects/geyser/versions/latest/builds/latest/downloads/velocity,https://download.geysermc.org/v2/projects/floodgate/versions/latest/builds/latest/downloads/velocity}
     extra_hosts:
       - host.docker.internal:host-gateway
     ports:
-      - "${MINECRAFT_SERVER_PORT}:${MINECRAFT_SERVER_PORT}"
-      - "${MINECRAFT_BEDROCK_SERVER_PORT}:${MINECRAFT_BEDROCK_SERVER_PORT}/udp"
+      - "${MINECRAFT_SERVER_PORT:-25565}:${MINECRAFT_SERVER_PORT:-25565}"
+      - "${MINECRAFT_BEDROCK_SERVER_PORT:-19132}:${MINECRAFT_BEDROCK_SERVER_PORT:-19132}/udp"
     restart: unless-stopped
