@@ -48,6 +48,26 @@ The weekly `check-pin-freshness` CI job re-resolves the pin and compares it agai
 - [ ] **Open 25565/tcp and 19132/udp** in the firewall; nothing else needs to be public.
 - [ ] **Back up `minecraft-server-proxy-data/`** — it holds `forwarding.secret` and plugin state.
 
+## Unattended updates
+
+Releases are the update channel: a tag is cut only after CI has built the pinned images, booted the full stack, and passed the smoke tests. `update.sh` moves a deployment to the newest tag and nothing else:
+
+```bash
+./update.sh --dry-run   # show what would be applied
+./update.sh             # update within the current major and redeploy
+```
+
+Put it on a timer for hands-off minor/patch updates:
+
+```bash
+# crontab -e
+17 5 * * *  /opt/minecraft-server-proxy-docker-compose/update.sh >> /var/log/minecraft-server-proxy-update.log 2>&1
+```
+
+The script refuses to cross a MAJOR template version on its own — majors are breaking by definition and their release notes exist to be read. After reading them, `./update.sh --allow-major` performs the jump. It also refuses to touch a checkout with local modifications: your customization belongs in `.env`, which updates never overwrite.
+
+This is deliberately a host-side script and not a container in the stack: an in-stack updater needs the Docker socket (root on the host) and turns "someone pushed to a repo" into "someone deployed to your machine" with no operator in the loop. A cron job under your own user updates only to tagged, CI-verified states and leaves the trust boundary where it was.
+
 ## Testing
 
 The [Deployment Verification](https://github.com/heyvaldemar/minecraft-server-proxy-docker-compose/actions/workflows/deployment-verification.yml?query=branch%3Amain) workflow runs on every push, pull request, and every Monday at 06:00 UTC: actionlint, a Trivy scan of the pinned image, the weekly freshness check, and a deploy-and-test job that boots the proxy and requires Velocity to load Geyser/Floodgate and listen on the advertised port.
