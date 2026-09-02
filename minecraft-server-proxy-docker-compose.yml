@@ -11,6 +11,16 @@ x-images:
 services:
   minecraft-server-proxy:
     image: *mc-proxy-image
+    # Resource limits as .env-overridable defaults (e.g. MINECRAFT_SERVER_PROXY_MEMORY_LIMIT=2g);
+    # the override survives every git pull.
+    deploy:
+      resources:
+        limits:
+          memory: ${MINECRAFT_SERVER_PROXY_MEMORY_LIMIT:-1g}
+          cpus: "${MINECRAFT_SERVER_PROXY_CPU_LIMIT:-1.0}"
+        reservations:
+          memory: ${MINECRAFT_SERVER_PROXY_MEMORY_RESERVATION:-128m}
+          cpus: "${MINECRAFT_SERVER_PROXY_CPU_RESERVATION:-0.25}"
     volumes:
       - ./minecraft-server-proxy-data:/server
       - ./plugins:/plugins:ro
