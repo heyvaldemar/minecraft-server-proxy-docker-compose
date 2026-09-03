@@ -1,9 +1,9 @@
-# Minecraft Proxy (Velocity + Geyser + Floodgate) — Docker Compose
+# Minecraft Proxy (Velocity + Geyser + Floodgate) on Docker Compose
 
 [![Deployment Verification](https://github.com/heyvaldemar/minecraft-server-proxy-docker-compose/actions/workflows/deployment-verification.yml/badge.svg?branch=main)](https://github.com/heyvaldemar/minecraft-server-proxy-docker-compose/actions/workflows/deployment-verification.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-This repository deploys a **Velocity** Minecraft proxy with **Geyser** and **Floodgate** — so both Java Edition and Bedrock Edition players (console, mobile, Windows) can join the servers behind it. Pairs with [minecraft-server-docker-compose](https://github.com/heyvaldemar/minecraft-server-docker-compose) as the backend.
+This repository deploys a **Velocity** Minecraft proxy with **Geyser** and **Floodgate**: so both Java Edition and Bedrock Edition players (console, mobile, Windows) can join the servers behind it. Pairs with [minecraft-server-docker-compose](https://github.com/heyvaldemar/minecraft-server-docker-compose) as the backend.
 
 ## Getting started
 
@@ -15,7 +15,7 @@ cd minecraft-server-proxy-docker-compose
 # 2. Point the proxy at your backend server(s)
 $EDITOR velocity.toml   # [servers] section; host.docker.internal reaches the host
 
-# 3. Deploy (defaults work — .env only for overrides)
+# 3. Deploy (defaults work, .env only for overrides)
 docker compose -f minecraft-server-proxy-docker-compose.yml -p minecraft-proxy up -d
 ```
 
@@ -31,22 +31,22 @@ docker compose -f minecraft-server-proxy-docker-compose.yml -p minecraft-proxy l
 
 ### Common first-deploy issues
 
-- **Proxy answers on the wrong port.** Your `velocity.toml` isn't being applied — keep the `./velocity.toml:/config/velocity.toml:ro` mount exactly as shipped. Note the image copies it into `/server` only if `/server/velocity.toml` doesn't already exist; delete `minecraft-server-proxy-data/velocity.toml` after config changes.
+- **Proxy answers on the wrong port.** Your `velocity.toml` isn't being applied. Keep the `./velocity.toml:/config/velocity.toml:ro` mount exactly as shipped. Note the image copies it into `/server` only if `/server/velocity.toml` doesn't already exist; delete `minecraft-server-proxy-data/velocity.toml` after config changes.
 - **Bedrock players can't join.** UDP 19132 must be open in your firewall; Geyser uses UDP, not TCP.
 - **Backend refuses proxied players.** Configure [player-info-forwarding](https://docs.papermc.io/velocity/player-information-forwarding) on the backend with the generated `forwarding.secret`.
 
 ## Supply chain trust
 
-The proxy image [`itzg/mc-proxy`](https://hub.docker.com/r/itzg/mc-proxy) is pinned to `tag@sha256:<digest>` as an interpolation default in the compose `x-images` block — earlier revisions deployed from `latest`. `git pull` alone delivers the tested version.
+The proxy image [`itzg/mc-proxy`](https://hub.docker.com/r/itzg/mc-proxy) is pinned to `tag@sha256:<digest>` as an interpolation default in the compose `x-images` block. Earlier revisions deployed from `latest`. `git pull` alone delivers the tested version.
 
 The daily `check-pin-freshness` CI job re-resolves the pin and compares it against the latest itzg release. GitHub Actions are pinned by commit SHA; Dependabot keeps those fresh.
 
 ## Production checklist
 
 - [ ] **Keep online-mode on** (default in the shipped `velocity.toml`) unless you fully understand the consequences.
-- [ ] **Set up player-info forwarding** to the backend with the generated `forwarding.secret` — never disable it on an internet-facing proxy.
+- [ ] **Set up player-info forwarding** to the backend with the generated `forwarding.secret`. Never disable it on an internet-facing proxy.
 - [ ] **Open 25565/tcp and 19132/udp** in the firewall; nothing else needs to be public.
-- [ ] **Back up `minecraft-server-proxy-data/`** — it holds `forwarding.secret` and plugin state.
+- [ ] **Back up `minecraft-server-proxy-data/`**: it holds `forwarding.secret` and plugin state.
 
 ## Unattended updates
 
@@ -64,13 +64,13 @@ Put it on a timer for hands-off minor/patch updates:
 17 5 * * *  /opt/minecraft-server-proxy-docker-compose/update.sh >> /var/log/minecraft-server-proxy-update.log 2>&1
 ```
 
-The script refuses to cross a MAJOR template version on its own — majors are breaking by definition and their release notes exist to be read. After reading them, `./update.sh --allow-major` performs the jump. It also refuses to touch a checkout with local modifications: your customization belongs in `.env`, which updates never overwrite.
+The script refuses to cross a MAJOR template version on its own: majors are breaking by definition and their release notes exist to be read. After reading them, `./update.sh --allow-major` performs the jump. It also refuses to touch a checkout with local modifications: your customization belongs in `.env`, which updates never overwrite.
 
 This is deliberately a host-side script and not a container in the stack: an in-stack updater needs the Docker socket (root on the host) and turns "someone pushed to a repo" into "someone deployed to your machine" with no operator in the loop. A cron job under your own user updates only to tagged, CI-verified states and leaves the trust boundary where it was.
 
 ## Resource limits
 
-Every service carries memory and CPU limits plus reservations as compose-level defaults — the same values CI boots the stack under. Override any of them in `.env` (the knobs and their defaults are listed in `.env.example`, e.g. `TRAEFIK_MEMORY_LIMIT=512m`) and the override survives every `git pull`. If a service is OOM-killed under real load, `docker inspect <container> --format '{{.State.OOMKilled}}'` says so; raise its `_MEMORY_LIMIT` and recreate.
+Every service carries memory and CPU limits plus reservations as compose-level defaults, the same values CI boots the stack under. Override any of them in `.env` (the knobs and their defaults are listed in `.env.example`, e.g. `TRAEFIK_MEMORY_LIMIT=512m`) and the override survives every `git pull`. If a service is OOM-killed under real load, `docker inspect <container> --format '{{.State.OOMKilled}}'` says so; raise its `_MEMORY_LIMIT` and recreate.
 
 ## Backups
 
@@ -90,7 +90,7 @@ The [Deployment Verification](https://github.com/heyvaldemar/minecraft-server-pr
 
 <div align="center">
 
-**Maintained by [Vladimir Mikhalev](https://github.com/heyvaldemar)** — Docker Captain · IBM Champion · AWS Community Builder
+**Maintained by [Vladimir Mikhalev](https://github.com/heyvaldemar)** · Docker Captain · IBM Champion · AWS Community Builder
 
 [YouTube](https://www.youtube.com/channel/UCf85kQ0u1sYTTTyKVpxrlyQ?sub_confirmation=1) · [Blog](https://heyvaldemar.com) · [LinkedIn](https://www.linkedin.com/in/heyvaldemar/)
 

@@ -41,7 +41,7 @@ _(no unreleased changes yet)_
 
 ### Added
 
-- **`update.sh`** — unattended updates to the newest tagged release,
+- **`update.sh`**: unattended updates to the newest tagged release,
   and nothing else: a tag is cut only after CI has booted the pinned
   images and passed the smoke tests, so "update to the latest tag" means
   "update to a combination a machine has already run". It refuses to
@@ -54,7 +54,7 @@ _(no unreleased changes yet)_
 ### Fixed (the shipped config was silently ignored)
 
 - **`velocity.toml` was mounted over the `/config` directory itself**,
-  which the itzg image ignores — Velocity started with its defaults and
+  which the itzg image ignores. Velocity started with its defaults and
   listened on 25577 while the compose published 25565, so the proxy
   never answered on the advertised port. The file is now mounted as
   `/config/velocity.toml`, which the image copies into `/server` on
