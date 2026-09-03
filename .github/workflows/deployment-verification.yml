@@ -56,7 +56,7 @@ jobs:
       - name: Read the pinned mc-proxy image from the compose file
         id: pin
         run: |
-          image="$(grep -m1 -oE '\$\{MINECRAFT_SERVER_IMAGE_TAG:-.*' minecraft-server-proxy-docker-compose.yml | sed -E -e ':a' -e 's/\$\{[A-Z_]+:-([^{}]*)\}/\1/' -e 'ta')"
+          image="$(grep -m1 -oE '\$\{MINECRAFT_SERVER_IMAGE_TAG:-.*' minecraft-server-proxy-docker-compose.yml | sed -E -e ':a' -e 's/\$\{[A-Z0-9_]+:-([^{}]*)\}/\1/' -e 'ta')"
           if [ -z "$image" ]; then
             echo "MINECRAFT_SERVER_IMAGE_TAG default not found in the compose x-images block" >&2
             exit 1
@@ -91,7 +91,7 @@ jobs:
 
       - name: Compare the pinned digest against what the tag resolves to now
         run: |
-          pin="$(grep -m1 -oE '\$\{MINECRAFT_SERVER_IMAGE_TAG:-.*' minecraft-server-proxy-docker-compose.yml | sed -E -e ':a' -e 's/\$\{[A-Z_]+:-([^{}]*)\}/\1/' -e 'ta')"
+          pin="$(grep -m1 -oE '\$\{MINECRAFT_SERVER_IMAGE_TAG:-.*' minecraft-server-proxy-docker-compose.yml | sed -E -e ':a' -e 's/\$\{[A-Z0-9_]+:-([^{}]*)\}/\1/' -e 'ta')"
           ref="${pin%%@*}"
           pinned_digest="${pin##*@}"
           current_digest="$(docker buildx imagetools inspect "$ref" --format '{{json .Manifest}}' | jq -r .digest)"
@@ -103,7 +103,7 @@ jobs:
 
       - name: Compare the pinned version against the latest itzg/docker-mc-proxy release
         run: |
-          pin="$(grep -m1 -oE '\$\{MINECRAFT_SERVER_IMAGE_TAG:-.*' minecraft-server-proxy-docker-compose.yml | sed -E -e ':a' -e 's/\$\{[A-Z_]+:-([^{}]*)\}/\1/' -e 'ta')"
+          pin="$(grep -m1 -oE '\$\{MINECRAFT_SERVER_IMAGE_TAG:-.*' minecraft-server-proxy-docker-compose.yml | sed -E -e ':a' -e 's/\$\{[A-Z0-9_]+:-([^{}]*)\}/\1/' -e 'ta')"
           ref="${pin%%@*}"
           pinned_version="${ref##*:}"
           latest="$(curl -fsSL --retry 3 -H "Authorization: Bearer $GH_API_TOKEN" https://api.github.com/repos/itzg/docker-mc-proxy/releases/latest | jq -r .tag_name)"
