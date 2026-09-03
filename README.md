@@ -39,7 +39,7 @@ docker compose -f minecraft-server-proxy-docker-compose.yml -p minecraft-proxy l
 
 The proxy image [`itzg/mc-proxy`](https://hub.docker.com/r/itzg/mc-proxy) is pinned to `tag@sha256:<digest>` as an interpolation default in the compose `x-images` block — earlier revisions deployed from `latest`. `git pull` alone delivers the tested version.
 
-The weekly `check-pin-freshness` CI job re-resolves the pin and compares it against the latest itzg release. GitHub Actions are pinned by commit SHA; Dependabot keeps those fresh.
+The daily `check-pin-freshness` CI job re-resolves the pin and compares it against the latest itzg release. GitHub Actions are pinned by commit SHA; Dependabot keeps those fresh.
 
 ## Production checklist
 
@@ -78,7 +78,7 @@ The proxy is stateless: `velocity.toml` and the `plugins` directory next to the 
 
 ## Testing
 
-The [Deployment Verification](https://github.com/heyvaldemar/minecraft-server-proxy-docker-compose/actions/workflows/deployment-verification.yml?query=branch%3Amain) workflow runs on every push, pull request, and every Monday at 06:00 UTC: actionlint, a Trivy scan of the pinned image, the weekly freshness check, and a deploy-and-test job that boots the proxy and requires Velocity to load Geyser/Floodgate and listen on the advertised port.
+The [Deployment Verification](https://github.com/heyvaldemar/minecraft-server-proxy-docker-compose/actions/workflows/deployment-verification.yml?query=branch%3Amain) workflow runs on every push, pull request, and every day at 06:00 UTC: actionlint, a Trivy scan of the pinned image, the weekly freshness check, and a deploy-and-test job that boots the proxy and requires Velocity to load Geyser/Floodgate and listen on the advertised port.
 
 ---
 
