@@ -39,6 +39,8 @@ docker compose -f minecraft-server-proxy-docker-compose.yml -p minecraft-proxy l
 
 The proxy image [`itzg/mc-proxy`](https://hub.docker.com/r/itzg/mc-proxy) is pinned to `tag@sha256:<digest>` as an interpolation default in the compose `x-images` block. Earlier revisions deployed from `latest`. `git pull` alone delivers the tested version.
 
+Two override levels exist per image. `<PREFIX>_IMAGE_VERSION` in `.env` swaps only the version of that image (Compose then pulls the tag, without a digest) and leaves every other pin as tested; `<PREFIX>_IMAGE_TAG` replaces the whole reference, digest included. The variable names are listed in `.env.example`. Nested defaults need Docker Compose v2.5 or newer (2022); v2.0 to v2.4 leave the inner `${...}` unexpanded and `docker compose up` fails with an invalid reference instead of deploying something unexpected.
+
 The daily `check-pin-freshness` CI job re-resolves the pin and compares it against the latest itzg release. GitHub Actions are pinned by commit SHA; Dependabot keeps those fresh.
 
 ## Production checklist
