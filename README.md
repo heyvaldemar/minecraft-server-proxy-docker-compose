@@ -3,7 +3,7 @@
 [![Deployment Verification](https://github.com/heyvaldemar/minecraft-server-proxy-docker-compose/actions/workflows/deployment-verification.yml/badge.svg?branch=main)](https://github.com/heyvaldemar/minecraft-server-proxy-docker-compose/actions/workflows/deployment-verification.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-This repository deploys a **Velocity** Minecraft proxy with **Geyser** and **Floodgate**: so both Java Edition and Bedrock Edition players (console, mobile, Windows) can join the servers behind it. Pairs with [minecraft-server-docker-compose](https://github.com/heyvaldemar/minecraft-server-docker-compose) as the backend.
+This repository deploys a Velocity Minecraft proxy with Geyser and Floodgate: so both Java Edition and Bedrock Edition players (console, mobile, Windows) can join the servers behind it. Pairs with [minecraft-server-docker-compose](https://github.com/heyvaldemar/minecraft-server-docker-compose) as the backend.
 
 ## Getting started
 
@@ -19,7 +19,7 @@ $EDITOR velocity.toml   # [servers] section; host.docker.internal reaches the ho
 docker compose -f minecraft-server-proxy-docker-compose.yml -p minecraft-proxy up -d
 ```
 
-Java players connect to port **25565** (TCP), Bedrock players to **19132** (UDP). Geyser and Floodgate are downloaded automatically on first start.
+Java players connect to port 25565 (TCP), Bedrock players to 19132 (UDP). Geyser and Floodgate are downloaded automatically on first start.
 
 ### What success looks like
 
