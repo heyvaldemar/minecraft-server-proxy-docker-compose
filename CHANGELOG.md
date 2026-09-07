@@ -9,16 +9,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 _(no unreleased changes yet)_
 
-## [1.4.0] - 2026-09-03
+## [1.4.1] - 2026-09-07
 
-### Added
+### Changed
 
-- **Per-image version overrides.** Every pin in the `x-images` block is
-  now `${<PREFIX>_IMAGE_TAG:-repo:${<PREFIX>_IMAGE_VERSION:-tag@sha256:digest}}`.
-  Set `<PREFIX>_IMAGE_VERSION` in `.env` to run a different version of one
-  image while every other pin stays as tested (Compose pulls that tag
-  without a digest), or `<PREFIX>_IMAGE_TAG` to replace the whole
-  reference as before. A deployment that sets neither is unchanged. The
+- **`update.sh` names any new required variable before it moves.** An update can add a required variable; `docker compose up` used to stop on it after the checkout, with the tree already on the new tag. The script now lists the variables that appeared in `.env.example` since your version and refuses, before anything has moved, when a required one is not in your `.env`. Names only, never values.
+
+ as before. A deployment that sets neither is unchanged. The
   freshness job, the Trivy matrix and the fleet digest automation resolve
   the nested default before reading a pin. Needs Docker Compose v2.5 or
   newer (2022): v2.0 to v2.4 leave the inner `${...}` unexpanded and
@@ -95,7 +92,8 @@ _(no unreleased changes yet)_
   requires Velocity to load Geyser/Floodgate and listen on 25565.
 - `.gitignore` entries for `.env` and the runtime server data.
 
-[Unreleased]: https://github.com/heyvaldemar/minecraft-server-proxy-docker-compose/compare/v1.4.0...HEAD
+[Unreleased]: https://github.com/heyvaldemar/minecraft-server-proxy-docker-compose/compare/v1.4.1...HEAD
+[1.4.1]: https://github.com/heyvaldemar/minecraft-server-proxy-docker-compose/compare/v1.4.0...v1.4.1
 [1.4.0]: https://github.com/heyvaldemar/minecraft-server-proxy-docker-compose/compare/v1.3.0...v1.4.0
 [1.3.0]: https://github.com/heyvaldemar/minecraft-server-proxy-docker-compose/compare/v1.2.0...v1.3.0
 [1.2.0]: https://github.com/heyvaldemar/minecraft-server-proxy-docker-compose/compare/v1.1.0...v1.2.0
