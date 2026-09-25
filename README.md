@@ -1,6 +1,7 @@
 # Minecraft Proxy (Velocity + Geyser + Floodgate) on Docker Compose
 
 [![Deployment Verification](https://github.com/heyvaldemar/minecraft-server-proxy-docker-compose/actions/workflows/deployment-verification.yml/badge.svg?branch=main)](https://github.com/heyvaldemar/minecraft-server-proxy-docker-compose/actions/workflows/deployment-verification.yml)
+[![OpenSSF Best Practices](https://www.bestpractices.dev/projects/14889/badge)](https://www.bestpractices.dev/projects/14889)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 This repository deploys a Velocity Minecraft proxy with Geyser and Floodgate: so both Java Edition and Bedrock Edition players (console, mobile, Windows) can join the servers behind it. Pairs with [minecraft-server-docker-compose](https://github.com/heyvaldemar/minecraft-server-docker-compose) as the backend.
