@@ -19,7 +19,7 @@ services:
     deploy:
       resources:
         limits:
-          memory: ${MINECRAFT_SERVER_PROXY_MEMORY_LIMIT:-1g}
+          memory: ${MINECRAFT_SERVER_PROXY_MEMORY_LIMIT:-2560m}
           cpus: "${MINECRAFT_SERVER_PROXY_CPU_LIMIT:-1.0}"
         reservations:
           memory: ${MINECRAFT_SERVER_PROXY_MEMORY_RESERVATION:-128m}
@@ -34,6 +34,8 @@ services:
       - ./velocity.toml:/config/velocity.toml:ro
     environment:
       TYPE: ${MINECRAFT_SERVER_TYPE:-VELOCITY}
+      # The proxy's heap (initial and maximum). MINECRAFT_SERVER_PROXY_MEMORY_LIMIT
+      # above holds it and a quarter more for what the JVM keeps outside it.
       MEMORY: ${MINECRAFT_SERVER_MEMORY:-2G}
       PLUGINS: ${MINECRAFT_SERVER_PLUGINS:-https://download.geysermc.org/v2/projects/geyser/versions/latest/builds/latest/downloads/velocity,https://download.geysermc.org/v2/projects/floodgate/versions/latest/builds/latest/downloads/velocity}
     extra_hosts:

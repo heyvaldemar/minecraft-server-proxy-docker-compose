@@ -92,6 +92,8 @@ This is deliberately a host-side script and not a container in the stack: an in-
 
 Every service carries memory and CPU limits plus reservations as compose-level defaults, the same values CI boots the stack under. Override any of them in `.env` (the knobs and their defaults are listed in `.env.example`, e.g. `TRAEFIK_MEMORY_LIMIT=512m`) and the override survives every `git pull`. If a service is OOM-killed under real load, `docker inspect <container> --format '{{.State.OOMKilled}}'` says so; raise its `_MEMORY_LIMIT` and recreate.
 
+The proxy's memory limit sits a quarter above its heap: the kernel counts everything in the container, and the JVM keeps memory outside its heap. `MINECRAFT_SERVER_PROXY_MEMORY_LIMIT` defaults to 2560m for the 2G heap `MINECRAFT_SERVER_MEMORY` sets. If you change one, change the other.
+
 ## Backups
 
 The proxy is stateless: `velocity.toml` and the `plugins` directory next to the compose file are the configuration, and `minecraft-server-proxy-data` holds only the proxy's runtime files (forwarding secret, logs). Keep the configuration in your own git repository; the players' worlds live on the backend servers, which carry their own backups.

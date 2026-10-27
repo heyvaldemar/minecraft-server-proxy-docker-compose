@@ -7,7 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-_(no unreleased changes yet)_
+### Fixed
+
+- **The proxy's memory limit was half its heap.** Since 1.2.0 `MINECRAFT_SERVER_PROXY_MEMORY_LIMIT` defaulted to 1g while `MINECRAFT_SERVER_MEMORY` gives the proxy's JVM a 2G heap, initial and maximum (the image sets both from it). The kernel kills a container that passes its limit, so a proxy whose heap grew past about 1 GB would be OOM-killed, taking every player off at once. CI did not see it: an idle proxy never grows its heap that far. The limit now defaults to 2560m, the 2G heap plus a quarter for what the JVM keeps outside it. If you change the heap in `.env`, change the limit with it; a limit you already set there is untouched.
 
 ## [1.4.6] - 2026-10-21
 
