@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+_(no unreleased changes yet)_
+
+## [1.4.7] - 2026-10-27
+
 ### Fixed
 
 - **The proxy's memory limit was half its heap.** Since 1.2.0 `MINECRAFT_SERVER_PROXY_MEMORY_LIMIT` defaulted to 1g while `MINECRAFT_SERVER_MEMORY` gives the proxy's JVM a 2G heap, initial and maximum (the image sets both from it). The kernel kills a container that passes its limit, so a proxy whose heap grew past about 1 GB would be OOM-killed, taking every player off at once. CI did not see it: an idle proxy never grows its heap that far. The limit now defaults to 2560m, the 2G heap plus a quarter for what the JVM keeps outside it. If you change the heap in `.env`, change the limit with it; a limit you already set there is untouched.
@@ -134,7 +138,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   requires Velocity to load Geyser/Floodgate and listen on 25565.
 - `.gitignore` entries for `.env` and the runtime server data.
 
-[Unreleased]: https://github.com/heyvaldemar/minecraft-server-proxy-docker-compose/compare/v1.4.6...HEAD
+[Unreleased]: https://github.com/heyvaldemar/minecraft-server-proxy-docker-compose/compare/v1.4.7...HEAD
+[1.4.7]: https://github.com/heyvaldemar/minecraft-server-proxy-docker-compose/compare/v1.4.6...v1.4.7
 [1.4.6]: https://github.com/heyvaldemar/minecraft-server-proxy-docker-compose/compare/v1.4.5...v1.4.6
 [1.4.5]: https://github.com/heyvaldemar/minecraft-server-proxy-docker-compose/compare/v1.4.4...v1.4.5
 [1.4.4]: https://github.com/heyvaldemar/minecraft-server-proxy-docker-compose/compare/v1.4.3...v1.4.4
