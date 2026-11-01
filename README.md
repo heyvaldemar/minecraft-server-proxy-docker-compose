@@ -36,6 +36,13 @@ docker compose -f minecraft-server-proxy-docker-compose.yml -p minecraft-proxy l
 - **Bedrock players can't join.** UDP 19132 must be open in your firewall; Geyser uses UDP, not TCP.
 - **Backend refuses proxied players.** Configure [player-info-forwarding](https://docs.papermc.io/velocity/player-information-forwarding) on the backend with the generated `forwarding.secret`.
 
+### When a plugin's download host is down
+
+Geyser and Floodgate come from `download.geysermc.org` through `MINECRAFT_SERVER_PLUGINS`, fetched on every start, and a failed download stops the start. On 2026-10-30 that host served a Cloudflare Origin certificate that no client trusts, and on the server this template comes from the proxy and every world behind it restarted in a loop for about seven minutes. If it happens again:
+
+- **Do not just delete the URLs.** The image removes from the plugins directory any entry that leaves the list ([its documentation](https://docker-minecraft-server.readthedocs.io/en/latest/mods-and-plugins/)), so the jars that were working go with them.
+- **Swap the URLs for local copies.** Put the same jars in `./plugins/`, which is mounted at `/plugins`, and list their container paths instead: `MINECRAFT_SERVER_PLUGINS=/plugins/geyser-velocity.jar,/plugins/floodgate-velocity.jar`. The list takes container paths as well as URLs. Then `docker compose up -d`, and switch back to the URLs once the host is fixed.
+
 ## Supply chain trust
 
 The proxy image [`itzg/mc-proxy`](https://hub.docker.com/r/itzg/mc-proxy) is pinned to `tag@sha256:<digest>` as an interpolation default in the compose `x-images` block. Earlier revisions deployed from `latest`. `git pull` alone delivers the tested version.
