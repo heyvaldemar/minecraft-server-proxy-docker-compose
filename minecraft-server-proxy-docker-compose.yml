@@ -6,7 +6,7 @@
 # CI (the Trivy scan, check-pin-freshness, the deploy job) reads the pin
 # from this line — this block is the single source of truth.
 x-images:
-  mc-proxy: &mc-proxy-image ${MINECRAFT_SERVER_IMAGE_TAG:-itzg/mc-proxy:${MINECRAFT_SERVER_IMAGE_VERSION:-2026.10.2@sha256:0b969bd3000d6e21ebb58444d062d63202cb552b5264b57a274fed7d2b411c0d}}
+  mc-proxy: &mc-proxy-image ${MINECRAFT_SERVER_IMAGE_TAG:-itzg/mc-proxy:${MINECRAFT_SERVER_IMAGE_VERSION:-2026.11.0@sha256:dab1cae028249cb901ac28ac3f00f0645166c6ab2257e3ffa82abbe905a79752}}
 
 services:
   minecraft-server-proxy:
