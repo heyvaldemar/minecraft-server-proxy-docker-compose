@@ -7,10 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+_(no unreleased changes yet)_
+
+## [1.4.9] - 2026-11-08
+
 ### Changed
 
 - **The README says what healthy means here.** The image's check pings Velocity, which with `ping-passthrough = "DISABLED"` answers itself: measured on 2026-11-08, the container was healthy in 54 seconds with no backend reachable, the reply reading `online=0`. Kept that way on purpose, so a backend restart does not mark the proxy unhealthy; the README says so, and that the check asks from inside the container.
-
 ## [1.4.8] - 2026-11-03
 
 ### Changed
@@ -147,7 +150,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   requires Velocity to load Geyser/Floodgate and listen on 25565.
 - `.gitignore` entries for `.env` and the runtime server data.
 
-[Unreleased]: https://github.com/heyvaldemar/minecraft-server-proxy-docker-compose/compare/v1.4.8...HEAD
+[Unreleased]: https://github.com/heyvaldemar/minecraft-server-proxy-docker-compose/compare/v1.4.9...HEAD
+[1.4.9]: https://github.com/heyvaldemar/minecraft-server-proxy-docker-compose/compare/v1.4.8...v1.4.9
 [1.4.8]: https://github.com/heyvaldemar/minecraft-server-proxy-docker-compose/compare/v1.4.7...v1.4.8
 [1.4.7]: https://github.com/heyvaldemar/minecraft-server-proxy-docker-compose/compare/v1.4.6...v1.4.7
 [1.4.6]: https://github.com/heyvaldemar/minecraft-server-proxy-docker-compose/compare/v1.4.5...v1.4.6
