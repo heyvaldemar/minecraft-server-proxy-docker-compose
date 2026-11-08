@@ -105,6 +105,10 @@ The proxy's memory limit sits a quarter above its heap: the kernel counts everyt
 
 The proxy is stateless: `velocity.toml` and the `plugins` directory next to the compose file are the configuration, and `minecraft-server-proxy-data` holds only the proxy's runtime files (forwarding secret, logs). Keep the configuration in your own git repository; the players' worlds live on the backend servers, which carry their own backups.
 
+## Health
+
+**Healthy means Velocity answers, not that a world is behind it.** The image's own check, `/usr/bin/health.sh`, sends the Minecraft server-list ping to Velocity's port and is healthy on Velocity's reply. With `ping-passthrough = "DISABLED"` in `velocity.toml`, Velocity writes that reply itself, so the container is healthy with no backend reachable at all: measured on 2026-11-08, healthy in 54 seconds with `lobby` and `survival` both unreachable, the reply reading `online=0`. That is deliberate. A proxy's health is the proxy's; tied to a backend, the proxy would read unhealthy every time a backend restarts. Each backend's own container answers for the backend. The check asks from inside the container: it does not prove the port is published on the host or open in your firewall.
+
 ## Container hardening
 
 Every service runs with `security_opt: no-new-privileges:true`, so a process cannot gain privileges through setuid binaries even if it escapes its initial capability set. Infrastructure containers (the reverse proxy, databases, caches, backups) run with `cap_drop: [ALL]` and add back only what their entrypoints need: `NET_BIND_SERVICE` for Traefik to bind :80/:443, `CHOWN`/`SETUID`/`SETGID` (and friends) for database images to own their data directory and drop to their service user. Application containers keep the default capability set on purpose: upstream images assume it, and a wrong guess there is a boot loop in production rather than a hardening win. CI boots the stack under exactly these settings on every push, so what ships is what was tested.

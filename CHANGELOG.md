@@ -7,7 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-_(no unreleased changes yet)_
+### Changed
+
+- **The README says what healthy means here.** The image's check pings Velocity, which with `ping-passthrough = "DISABLED"` answers itself: measured on 2026-11-08, the container was healthy in 54 seconds with no backend reachable, the reply reading `online=0`. Kept that way on purpose, so a backend restart does not mark the proxy unhealthy; the README says so, and that the check asks from inside the container.
 
 ## [1.4.8] - 2026-11-03
 
