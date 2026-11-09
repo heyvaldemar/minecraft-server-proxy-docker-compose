@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+_(no unreleased changes yet)_
+
+## [1.4.10] - 2026-11-09
+
 ### Changed
 
 - **`itzg/mc-proxy:2026.11.0` moved to `itzg/mc-proxy:2026.11.1`.** The freshness check reported the lag; the deploy job booted the stack on the new image before this landed.
@@ -152,7 +156,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   requires Velocity to load Geyser/Floodgate and listen on 25565.
 - `.gitignore` entries for `.env` and the runtime server data.
 
-[Unreleased]: https://github.com/heyvaldemar/minecraft-server-proxy-docker-compose/compare/v1.4.9...HEAD
+[Unreleased]: https://github.com/heyvaldemar/minecraft-server-proxy-docker-compose/compare/v1.4.10...HEAD
+[1.4.10]: https://github.com/heyvaldemar/minecraft-server-proxy-docker-compose/compare/v1.4.9...v1.4.10
 [1.4.9]: https://github.com/heyvaldemar/minecraft-server-proxy-docker-compose/compare/v1.4.8...v1.4.9
 [1.4.8]: https://github.com/heyvaldemar/minecraft-server-proxy-docker-compose/compare/v1.4.7...v1.4.8
 [1.4.7]: https://github.com/heyvaldemar/minecraft-server-proxy-docker-compose/compare/v1.4.6...v1.4.7
